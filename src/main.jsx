@@ -5,7 +5,12 @@ import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import './index.css'
 
-const basename = window.location.hostname.includes('github.io') ? '/gbpfilesapp' : ''
+const rawBase = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '/'
+const basename = rawBase.endsWith('/') && rawBase.length > 1
+  ? rawBase.slice(0, -1)
+  : (window.location.hostname.includes('github.io') || window.location.pathname.startsWith('/gbpfilesapp'))
+    ? '/gbpfilesapp'
+    : ''
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,9 +22,4 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
 )
 
-if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-  window.addEventListener('load', () => {
-    const swUrl = `${basename}/sw.js`
-    navigator.serviceWorker.register(swUrl).catch(() => {})
-  })
-}
+// Service worker is handled by vite-plugin-pwa (autoUpdate); do not double-register here

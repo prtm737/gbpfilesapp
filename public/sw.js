@@ -1,5 +1,6 @@
-const CACHE_NAME = 'gbp-ftms-v1'
-const CORE_ASSETS = ['/', '/index.html']
+const CACHE_NAME = 'gbp-ftms-v2'
+const _ghBase = self.location.pathname.includes('/gbpfilesapp') ? '/gbpfilesapp' : ''
+const CORE_ASSETS = [`${_ghBase}/`, `${_ghBase}/index.html`]
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -29,7 +30,7 @@ self.addEventListener('fetch', event => {
         return response
       })
       .catch(() =>
-        caches.match(event.request).then(cached => cached || caches.match('/index.html'))
+        caches.match(event.request).then(cached => cached || caches.match(`${_ghBase}/index.html`) || caches.match(`${_ghBase}/`))
       )
   )
 })

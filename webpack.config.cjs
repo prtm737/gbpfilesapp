@@ -65,7 +65,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[contenthash].js',
-    publicPath: process.env.GITHUB_PAGES ? '/gbpfilesapp/' : '/',
+    publicPath: process.env.BASE_URL || '/gbpfilesapp/',
     clean: true,
   },
   module: {
@@ -98,6 +98,12 @@ module.exports = {
     new CopyPublicPlugin(),
     new HtmlWebpackPlugin({
       template: './index.build.html',
+      filename: 'index.html',
+      favicon: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: './index.build.html',
+      filename: '404.html',
       favicon: false,
     }),
   ],

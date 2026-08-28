@@ -41,15 +41,24 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp(email, password, fullName, role, department) {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: fullName, role, department } },
+    })
     if (error) throw error
+    // Profile is auto-created by handle_new_user trigger; fallback insert only
+    // if trigger didn't run (e.g., email confirmation pending, no row yet)
     if (data.user) {
-      await supabase.from('profiles').insert({
-        id: data.user.id,
-        full_name: fullName,
-        role,
-        department,
-      })
+      const { data: existing } = await supabase.from('profiles').select('id').eq('id', data.user.id).single()
+      if (!existing) {
+        await supabase.from('profiles').insert({
+          id: data.user.id,
+          full_name: fullName,
+          role,
+          department,
+        })
+      }
     }
   }
 

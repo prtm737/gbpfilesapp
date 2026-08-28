@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -22,6 +22,7 @@ function ProtectedLayout({ children, allowedRoles }) {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/login" element={<Login />} />
 
       <Route path="/dashboard" element={<ProtectedLayout allowedRoles={['admin', 'officer', 'peon', 'viewer']}><Dashboard /></ProtectedLayout>} />

@@ -107,7 +107,11 @@ export default function Dashboard() {
               <p className="text-xs text-gray-500">
                 {m.files?.file_number} · {m.status} · {new Date(m.timestamp).toLocaleString('en-IN')}
               </p>
-              {m.peon && <p className="text-xs text-gray-400">Carrier: {m.peon.full_name}</p>}
+              {m.peon && (
+                <p className="text-xs text-gray-600 mt-1 font-medium">
+                  🚶 Handled by carrier: <span className="text-gray-900 font-semibold">{m.peon.full_name}</span>
+                </p>
+              )}
             </div>
           ))
         )}

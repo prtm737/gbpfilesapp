@@ -9,7 +9,9 @@
     "build:webpack": "webpack --config webpack.config.cjs",
     "build:vite": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "keep-alive": "node scripts/keep-alive.js",
+    "keep-alive:daemon": "node scripts/keep-alive.js --daemon"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",

@@ -20,9 +20,20 @@ export function formatTime(ts) {
 export const ROLE_LABELS = {
   admin: 'Administrator',
   officer: 'Officer',
-  peon: 'Peon / Dispatch',
+  peon: 'Dispatch / Staff',
   viewer: 'Viewer / Staff',
 }
+
+export const DEPARTMENTS = [
+  'Admin',
+  'Biotech Incubation',
+  'Finance & Accounts',
+  'Legal & Compliance',
+  'Research & Development',
+  'Human Resources',
+  'Procurement & Store',
+  'Facility Management',
+]
 
 export const PRIORITY_COLORS = {
   normal: 'bg-blue-100 text-blue-800',

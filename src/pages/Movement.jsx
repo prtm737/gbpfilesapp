@@ -71,8 +71,13 @@ export default function Movement() {
                   </span>
                 </div>
               </div>
-              {m.peon && <p className="text-xs text-gray-400 mt-1">Carrier: {m.peon.full_name}</p>}
-              {m.remarks && <p className="text-xs text-gray-400 italic mt-0.5">"{m.remarks}"</p>}
+              {m.peon && (
+                <p className="text-xs text-gray-600 mt-1 font-medium flex items-center gap-1">
+                  <span>🚶 Handled by carrier:</span>
+                  <span className="text-gray-900 font-semibold">{m.peon.full_name}</span>
+                </p>
+              )}
+              {m.remarks && <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded mt-1.5 italic">"{m.remarks}"</p>}
             </div>
           ))}
         </div>

@@ -1,0 +1,33 @@
+name: Supabase Keep-Alive Ping
+
+on:
+  schedule:
+    # Run daily at 04:00 AM UTC
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keep-alive HTTP query to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://zbjzddcwltdfvgkjvnwr.supabase.co' }}
+          ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpianpkZGN3bHRkZnZna2p2bndyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4OTg2NDksImV4cCI6MjEwMzQ3NDY0OX0.ZCQHNcYXMjHuDcE19uH3vSrf2-Tz1x0EBfkP0V2U9O4' }}
+        run: |
+          echo "Sending keep-alive request to Supabase ($SUPABASE_URL)..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET \
+            "${SUPABASE_URL}/rest/v1/profiles?select=count&limit=1" \
+            -H "apikey: ${ANON_KEY}" \
+            -H "Authorization: Bearer ${ANON_KEY}" \
+            -H "Prefer: count=exact")
+          
+          echo "Supabase responded with HTTP status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 500 ]; then
+            echo "✓ Supabase database is active and awake!"
+            exit 0
+          else
+            echo "❌ Supabase responded with unexpected error status $HTTP_STATUS"
+            exit 1
+          fi

@@ -19,12 +19,19 @@ CREATE TABLE IF NOT EXISTS files (
     file_number TEXT UNIQUE NOT NULL,
     title TEXT NOT NULL,
     department TEXT NOT NULL,
+    description TEXT,
+    remarks TEXT,
     priority TEXT CHECK (priority IN ('normal', 'urgent', 'immediate')) DEFAULT 'normal',
     current_holder_id UUID REFERENCES profiles(id),
     status TEXT CHECK (status IN ('active', 'in_transit', 'archived')) DEFAULT 'active',
     created_by UUID REFERENCES profiles(id),
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Idempotent column additions for existing tables
+ALTER TABLE files ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE files ADD COLUMN IF NOT EXISTS remarks TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS phone TEXT;
 
 -- 3. Custody Movement Chain Table (Immutable Audit Log)
 CREATE TABLE IF NOT EXISTS file_movements (

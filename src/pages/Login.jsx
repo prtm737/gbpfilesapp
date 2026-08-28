@@ -73,17 +73,18 @@ export default function Login() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                 <select
                   value={role} onChange={e => setRole(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
                 >
-                  <option value="viewer">Viewer / Staff</option>
                   <option value="officer">Officer</option>
-                  <option value="peon">Peon / Dispatch</option>
+                  <option value="viewer">Viewer / Staff</option>
+                  <option value="peon">Dispatch / Staff</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
                 <input
                   type="text" value={department} onChange={e => setDepartment(e.target.value)}
+                  placeholder="e.g. Admin, Finance, Biotech Incubation"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 />
               </div>

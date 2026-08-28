@@ -40,11 +40,19 @@ export function AuthProvider({ children }) {
     if (error) throw error
   }
 
-  async function signUp(email, password, fullName, role, department) {
+  async function signUp(email, password, fullName, role, department, phone) {
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    const isGhPages = typeof window !== 'undefined' && (window.location.hostname.includes('github.io') || window.location.pathname.startsWith('/gbpfilesapp'))
+    const redirectBase = isGhPages ? `${origin}/gbpfilesapp` : origin
+    const emailRedirectTo = `${redirectBase}/login`
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, role, department } },
+      options: {
+        data: { full_name: fullName, role, department, phone },
+        emailRedirectTo,
+      },
     })
     if (error) throw error
     // Profile is auto-created by handle_new_user trigger; fallback insert only
@@ -57,9 +65,11 @@ export function AuthProvider({ children }) {
           full_name: fullName,
           role,
           department,
+          phone: phone || null,
         })
       }
     }
+    return data
   }
 
   async function signOut() {

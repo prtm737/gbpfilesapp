@@ -5,9 +5,11 @@ import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import './index.css'
 
+const basename = window.location.hostname.includes('github.io') ? '/gbpfilesapp' : ''
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <AuthProvider>
         <App />
       </AuthProvider>
@@ -17,6 +19,7 @@ createRoot(document.getElementById('root')).render(
 
 if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
+    const swUrl = `${basename}/sw.js`
+    navigator.serviceWorker.register(swUrl).catch(() => {})
   })
 }
